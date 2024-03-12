@@ -8,7 +8,7 @@ int main(void)
     Rule *rules = ruleParser(rulesFile);
     Fact *facts = factParser(factsFile);
 
-    // loop through rules and print their data
+    // //loop through rules and print their data
     // Rule *current_rule = rules;
     // while (current_rule != NULL)
     // {

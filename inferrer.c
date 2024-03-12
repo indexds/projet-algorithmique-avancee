@@ -4,8 +4,8 @@ bool ForwardChaining(Fact *first_fact, Rule *first_rule) // Tete de liste des fa
 {
     Rule* current_rule = first_rule;
 
-
     while(current_rule != NULL){
+        printf("%s\n", current_rule->data);
         if(current_rule->condition == NULL){
             return false;
         }
@@ -23,6 +23,7 @@ bool ForwardChaining(Fact *first_fact, Rule *first_rule) // Tete de liste des fa
         }
 
         current_rule = current_rule->next;
+
     }
     return false;
 }
