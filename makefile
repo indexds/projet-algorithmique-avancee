@@ -8,7 +8,7 @@ CFLAGS = -Wall -Wextra
 TARGET = main
 
 # Source files
-SRCS = parser.c
+SRCS = parser.c inferrer.c
 
 # Object files
 OBJS = $(SRCS:.c=.o)

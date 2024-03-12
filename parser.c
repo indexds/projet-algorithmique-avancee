@@ -1,30 +1,4 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
-
-
-#define WORD_SIZE 255
-
-typedef struct Condition
-{
-    char data[WORD_SIZE];
-    struct Condition *next;
-} Condition;
-
-typedef struct Rule
-{
-    char data[WORD_SIZE];
-    struct Rule *next;
-    struct Condition *condition;
-} Rule;
-
-typedef struct Fact
-{
-    char data[WORD_SIZE];
-    struct Fact *next;
-} Fact;
-
+#include "parser.h"
 
 FILE *openFile(char *filename)
 {
@@ -162,6 +136,10 @@ int main(void)
     while (current_rule != NULL)
     {
         printf("%s\n", current_rule->data);
+        while(current_rule->condition != NULL){
+            printf("Condition: %s\n", current_rule->condition->data);
+            current_rule->condition = current_rule->condition->next;
+        }
         current_rule = current_rule->next;
     }
 
