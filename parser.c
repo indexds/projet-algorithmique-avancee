@@ -4,15 +4,27 @@
 #include <string.h>
 
 
-#define WORD_LIST_SIZE 10
 #define WORD_SIZE 255
 
-typedef struct Branch
+typedef struct Condition
 {
     char data[WORD_SIZE];
-    struct Branch *left_branch;
-    struct Branch *right_branch;
-} Branch;
+    struct Condition *next;
+} Condition;
+
+typedef struct Rule
+{
+    char data[WORD_SIZE];
+    struct Rule *next;
+    struct Condition *condition;
+} Rule;
+
+typedef struct Fact
+{
+    char data[WORD_SIZE];
+    struct Fact *next;
+} Fact;
+
 
 FILE *openFile(char *filename)
 {
@@ -30,98 +42,120 @@ FILE *openFile(char *filename)
         exit(EXIT_FAILURE);
     }
 
-    printf("Ouverture du fichier '%s' reussie\n", filename);
     return file;
 }
 
-void freeWordList(char **wordList)
+Rule *ruleParser(FILE *file) //WIP
 {
-    for (size_t i = 0; i < WORD_LIST_SIZE; i++)
+    char *data = calloc(WORD_SIZE, sizeof(char));
+    char *line = calloc(WORD_SIZE*10, sizeof(char));
+
+    Rule *previous_rule = NULL;
+    Rule *first_rule = NULL;
+
+    while (1)
     {
-        free(wordList[i]);
-    }
-    free(wordList);
-}
-
-char **lineReader(FILE *file)
-{
-    char *line = calloc(2048, sizeof(char));
-
-    char **wordList = calloc(WORD_LIST_SIZE, sizeof(char *));
-    for (size_t i = 0; i < 10; i++)
-    {
-        wordList[i] = calloc(WORD_SIZE, sizeof(char));
-    }
-
-
-
-    char *word = calloc(WORD_SIZE, sizeof(char));
-
-    for (size_t i = 0; i < WORD_LIST_SIZE; i++)
-    {
-        fscanf(file, "%s", word);
-
-        if (strcmp(word, "->") == 0)
+        line = fgets(line, WORD_SIZE*10, file);
+        if (line == NULL)
         {
-            fscanf(file, "%s", wordList[9]);
-            wordList[9][strlen(wordList[9]) - 1] = '\0'; // remove the ';'
             break;
         }
-        else
-        {
-            strncpy(wordList[i], word, strlen(word));
+
+        Rule *current_rule = calloc(1, sizeof(Rule));
+        current_rule->next = NULL;
+        current_rule->condition = NULL;
+
+        while(sscanf(line, "%s", data) != EOF){
+            if(strcmp(data, "->") == 0){
+                sscanf(line, "%s", current_rule->data); //Dernier mot de la ligne, regle à inferer
+            }
+            else{
+                Condition *current_condition = calloc(1, sizeof(Condition));
+                strncpy(current_condition->data, data, strlen(data));
+                current_condition->next = NULL;
+
+                if(current_rule->condition == NULL){
+                    current_rule->condition = current_condition; //Premiere condition de la regle
+                }
+                else{
+                    Condition *previous_condition = current_rule->condition;
+                    while(previous_condition->next != NULL){
+                        previous_condition = previous_condition->next;
+                    }
+                    previous_condition->next = current_condition;
+                }
+            }
         }
-
-        // empty word variable
-        memset(word, 0, WORD_SIZE);
     }
-    free(word);
-
+    free(data);
     free(line);
-    return wordList;
+
+    return first_rule; //Tete de liste
 }
 
-Branch* createBranch(char **wordList)
-{
-    size_t element_count = 0;
-    for(size_t i = 0; i < WORD_LIST_SIZE; i++)
-    {
-        if(strlen(wordList[i]) > 0)
+Fact *factParser(FILE *file){
+    char *data = calloc(WORD_SIZE, sizeof(char));
+
+    Fact* previous_fact = NULL;
+    Fact* first_fact = NULL;
+
+    while(1){
+
+        if (fscanf(file, "%s", data) == EOF)
         {
-            element_count++;
-        }
-    }
-
-
-    Branch **branch = calloc(element_count, sizeof(Branch));
-    for (size_t i = 0; i < element_count; i++)
-    {
-        branch[i] = calloc(1, sizeof(Branch));
-    }
-
-    for(size_t i = 0 ; i < WORD_LIST_SIZE - 1; i++)
-    {
-        strncpy(branch[i]->data, wordList[i], strlen(wordList[i]));
-
-
-        if(i < WORD_LIST_SIZE - 1){
-            branch[i]->right_branch = branch[i + 1];
-            branch[i]->left_branch = branch[WORD_LIST_SIZE - 1];
-        }
-        else{
-            branch[i]->right_branch = NULL; /* !\ A linker avec la prochaine wordlist /!\ */
-            branch[i]->left_branch = NULL;
+            break;
         }
 
+        data[strlen(data) - 1] = '\0'; //Suppression du dernier caractère (;)
+
+        Fact *current_fact = calloc(1, sizeof(Fact));
+        strncpy(current_fact->data, data, strlen(data));
+        current_fact->next = NULL;
+
+        if(previous_fact != NULL){
+            previous_fact->next = current_fact; //Lien entre les faits
+        }
+
+        if (first_fact == NULL){
+            first_fact = current_fact;
+        }
+
+        previous_fact = current_fact;
     }
-    return branch[0]; //Return leftMostBranch
+    return first_fact; //Tete de liste
 }
+
+
+
+
 
 int main(void)
 {
-    FILE *file = openFile("rules.kbs");
+    FILE *factsFile = openFile("facts.kbs");
+    FILE *rulesFile = openFile("rules.kbs");
 
+    Rule *rules = ruleParser(rulesFile);
+    Fact *facts = factParser(factsFile);
 
-    fclose(file);
+    // loop through rules and print their data
+    Rule *current_rule = rules;
+    while (current_rule != NULL)
+    {
+        printf("%s\n", current_rule->data);
+        current_rule = current_rule->next;
+    }
+
+    // loop through facts and print their data
+    printf("===================\n");
+
+    Fact *current_fact = facts;
+    while (current_fact != NULL)
+    {
+        printf("%s\n", current_fact->data);
+        current_fact = current_fact->next;
+    }
+
+    fclose(factsFile);
+    fclose(rulesFile);
     return 0;
 }
