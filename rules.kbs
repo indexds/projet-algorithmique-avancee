@@ -1,9 +1,7 @@
-b d e -> f
-g d -> a
-f c -> a
-b -> x
-e -> d
-a x -> h
-c -> d
-x c -> a
-x b -> d
+ -> Lamproie
+Machoire -> Thon
+Machoire Doigts -> Salamandre
+Machoire Doigts Amnios Mandibule -> Crocodile
+Machoire Doigts Amnios Placenta -> Oreillard
+Machoire Doigts Amnios Placenta Ongles Queue-> Primate
+Machoire Doigts Amnios Placenta Ongles -> Hominoide
