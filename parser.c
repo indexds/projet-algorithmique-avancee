@@ -45,17 +45,19 @@ FILE *openFile(char *filename)
     return file;
 }
 
-Rule *ruleParser(FILE *file) //WIP
+Rule *ruleParser(FILE *file)
 {
     char *data = calloc(WORD_SIZE, sizeof(char));
-    char *line = calloc(WORD_SIZE*10, sizeof(char));
+    char *line = calloc(WORD_SIZE * 10, sizeof(char));
 
     Rule *previous_rule = NULL;
     Rule *first_rule = NULL;
 
+    Condition *previous_condition = NULL;
+
     while (1)
     {
-        line = fgets(line, WORD_SIZE*10, file);
+        line = fgets(line, WORD_SIZE * 10, file);
         if (line == NULL)
         {
             break;
@@ -65,32 +67,55 @@ Rule *ruleParser(FILE *file) //WIP
         current_rule->next = NULL;
         current_rule->condition = NULL;
 
-        while(sscanf(line, "%s", data) != EOF){
-            if(strcmp(data, "->") == 0){
-                sscanf(line, "%s", current_rule->data); //Dernier mot de la ligne, regle à inferer
-            }
-            else{
-                Condition *current_condition = calloc(1, sizeof(Condition));
-                strncpy(current_condition->data, data, strlen(data));
-                current_condition->next = NULL;
+        char *token = strtok(line, " \t\n"); // Tokenize the line
 
-                if(current_rule->condition == NULL){
-                    current_rule->condition = current_condition; //Premiere condition de la regle
-                }
-                else{
-                    Condition *previous_condition = current_rule->condition;
-                    while(previous_condition->next != NULL){
-                        previous_condition = previous_condition->next;
-                    }
-                    previous_condition->next = current_condition;
+        while (token != NULL)
+        {
+            if (strcmp(token, "->") == 0)
+            {
+                token = strtok(NULL, " \t\n"); // Move to the next word after "->"
+                if (token != NULL)
+                {
+                    strncpy(current_rule->data, token, WORD_SIZE); // Set the rule data
                 }
             }
+            else
+            {
+                Condition *current_condition = calloc(1, sizeof(Condition));
+                current_condition->next = NULL;
+                strncpy(current_condition->data, token, WORD_SIZE); // Set condition data
+
+                if (current_rule->condition == NULL)
+                {
+                    current_rule->condition = current_condition; // First condition of the rule
+                }
+                else
+                {
+                    if (previous_condition != NULL)
+                    {
+                        previous_condition->next = current_condition; // Link conditions
+                    }
+                }
+                previous_condition = current_condition;
+            }
+            token = strtok(NULL, " \t\n"); // Move to the next word
         }
+
+        if (previous_rule != NULL)
+        {
+            previous_rule->next = current_rule; // Link rules
+        }
+        if (first_rule == NULL)
+        {
+            first_rule = current_rule;
+        }
+        previous_rule = current_rule;
     }
+
     free(data);
     free(line);
 
-    return first_rule; //Tete de liste
+    return first_rule; // Head of the list
 }
 
 Fact *factParser(FILE *file){
@@ -105,8 +130,6 @@ Fact *factParser(FILE *file){
         {
             break;
         }
-
-        data[strlen(data) - 1] = '\0'; //Suppression du dernier caractère (;)
 
         Fact *current_fact = calloc(1, sizeof(Fact));
         strncpy(current_fact->data, data, strlen(data));
@@ -124,9 +147,6 @@ Fact *factParser(FILE *file){
     }
     return first_fact; //Tete de liste
 }
-
-
-
 
 
 int main(void)
