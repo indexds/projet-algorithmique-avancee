@@ -31,9 +31,9 @@ int main(void)
     //     current_fact = current_fact->next;
     // }
 
-    bool bite = ForwardChaining(facts, rules);
+    char* bite = ForwardChaining(facts, rules);
 
-    printf("%d\n", bite);
+    printf("%s\n", bite);
     fclose(factsFile);
     fclose(rulesFile);
     return 0;

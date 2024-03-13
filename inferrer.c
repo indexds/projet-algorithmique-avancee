@@ -1,13 +1,12 @@
 #include "inferrer.h"
 
-bool ForwardChaining(Fact *first_fact, Rule *first_rule) // Tete de liste des faits et des regles
+char* ForwardChaining(Fact *first_fact, Rule *first_rule) // Tete de liste des faits et des regles
 {
     Rule* current_rule = first_rule;
 
     while(current_rule != NULL){
-        printf("%s\n", current_rule->data);
         if(current_rule->condition == NULL){
-            return false;
+            return "Not found.";
         }
 
         Fact* current_fact = first_fact;
@@ -15,7 +14,7 @@ bool ForwardChaining(Fact *first_fact, Rule *first_rule) // Tete de liste des fa
         while(current_fact != NULL){
             if(strcmp(current_fact->data, current_rule->condition->data) == 0){
                 if(current_rule->condition->next == NULL){
-                    return true;
+                    return current_rule->data;
                 }
                 current_rule->condition = current_rule->condition->next;
             }
@@ -25,5 +24,5 @@ bool ForwardChaining(Fact *first_fact, Rule *first_rule) // Tete de liste des fa
         current_rule = current_rule->next;
 
     }
-    return false;
+    return "Not found.";
 }
