@@ -9,7 +9,7 @@ GTK4_LIBS = $(shell $(PKG_CONFIG) --libs gtk4)
 TARGET = main
 
 # Source files
-SRCS = parser.c inferrer.c app.c
+SRCS = parser.c inferrer.c app.c main.c
 
 # Object files
 OBJS = $(SRCS:.c=.o)

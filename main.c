@@ -1,4 +1,5 @@
 #include "inferrer.h"
+#include "app.h"
 
 int main(void)
 {
@@ -36,5 +37,7 @@ int main(void)
     printf("%s\n", bite);
     fclose(factsFile);
     fclose(rulesFile);
+
+    app();
     return 0;
 }

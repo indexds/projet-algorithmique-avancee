@@ -1,5 +1,5 @@
-#ifndef inferrer
-#define inferrer
+#ifndef INFERRER_H
+#define INFERRER_H
 
 #include "parser.h"
 
