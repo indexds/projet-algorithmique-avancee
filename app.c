@@ -28,9 +28,7 @@ static void button_clicked(GtkButton *button, gpointer user_data)
 
         char *value = ForwardChaining(facts, rules);
 
-        //Set textbox2 content to value
-        GtkEntryBuffer *buffer2 = gtk_entry_get_buffer(GTK_ENTRY(textbox));
-        gtk_entry_buffer_set_text(buffer2, value, -1);
+        gtk_entry_buffer_set_text(buffer, value, -1);
 
         fclose(factsFile);
         fclose(rulesFile);
