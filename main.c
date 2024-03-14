@@ -31,9 +31,9 @@ int main(void)
     //     current_fact = current_fact->next;
     // }
 
-    bool bite = ForwardChaining(facts, rules);
+    Fact* bite = ForwardChaining(facts, rules);
 
-    printf("%d\n", bite);
+    printf("Par chainage avant, on trouve que l'animal correspondant est :%s\n", bite->data);
     fclose(factsFile);
     fclose(rulesFile);
     return 0;

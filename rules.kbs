@@ -1,6 +1,17 @@
-Machoire -> Thon
-Machoire Doigts -> Salamandre
-Machoire Doigts Amnios Mandibule -> Crocodile
-Machoire Doigts Amnios Placenta -> Oreillard
-Machoire Doigts Amnios Placenta Ongles Queue -> Primate
-Machoire Doigts Amnios Placenta Ongles -> Hominoide
+Squelette_interne Crane -> Vertebre
+Vertebre Os -> Osteichtyen
+Vertebre Cartilage -> Chondrichthyen
+Osteichtyen 4_Membres -> Tretrapode
+Osteichtyen Nageoires -> Actinopterygien
+Tretrapode Gesier Plumes -> Oiseau
+Oiseau -> END
+Tretrapode Gesier Trou_triangle -> Crocodile
+Crocodile -> END
+Tretrapode Poils_Mamelles -> Mammifere
+Mammifere -> END
+Tretrapode Carapace -> Chenolien
+Chenolien -> END
+Tretrapode Machoire_large -> Squamate
+Squamate -> END
+Tretrapode 4_doigts -> Lissamphibien
+Lissamphibien -> END

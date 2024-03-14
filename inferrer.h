@@ -3,6 +3,7 @@
 
 #include "parser.h"
 
-bool ForwardChaining(Fact *first_fact, Rule *first_rule);
+Fact* ForwardChaining(Fact *first_fact, Rule *first_rule);
+void AddFact(Rule* new_fact, Fact** first_fact);
 
 #endif
