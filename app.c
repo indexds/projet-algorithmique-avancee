@@ -18,6 +18,7 @@ static void button_clicked(GtkButton *button, gpointer user_data)
         if (textbox1_content)
             g_free(textbox1_content);
         textbox1_content = g_strdup(text);
+
         editFactsFile("facts.kbs", textbox1_content);
         FILE *factsFile = openFile("facts.kbs");
         FILE *rulesFile = openFile("rules.kbs");
@@ -26,9 +27,14 @@ static void button_clicked(GtkButton *button, gpointer user_data)
         Fact *facts = factParser(factsFile);
 
         char *value = ForwardChaining(facts, rules);
-        printf("%s\n", value);
+
+        //Set textbox2 content to value
+        GtkEntryBuffer *buffer2 = gtk_entry_get_buffer(GTK_ENTRY(textbox));
+        gtk_entry_buffer_set_text(buffer2, value, -1);
+
         fclose(factsFile);
         fclose(rulesFile);
+
         freeFacts(facts);
         freeRules(rules);
     }
