@@ -121,3 +121,49 @@ Fact *factParser(FILE *file){
     }
     return first_fact; //Tete de liste
 }
+
+void freeRules(Rule *rules)
+{
+    Rule *current_rule = rules;
+    while (current_rule != NULL)
+    {
+        Condition *current_condition = current_rule->condition;
+        while (current_condition != NULL)
+        {
+            Condition *next_condition = current_condition->next;
+            free(current_condition);
+            current_condition = next_condition;
+        }
+        Rule *next_rule = current_rule->next;
+        free(current_rule);
+        current_rule = next_rule;
+    }
+}
+
+void freeFacts(Fact *facts)
+{
+    Fact *current_fact = facts;
+    while (current_fact != NULL)
+    {
+        Fact *next_fact = current_fact->next;
+        free(current_fact);
+        current_fact = next_fact;
+    }
+}
+
+void editFactsFile(char* filename, char* content){
+    FILE *file = fopen(filename, "w");
+    if (file == NULL)
+    {
+        fprintf(stderr, "Impossible d'ouvrir le fichier '%s'\n", filename);
+        exit(EXIT_FAILURE);
+    }
+    //Tokenize each word of the content and write it to the file with a newline at the end of each
+    char *token = strtok(content, " \t\n");
+    while (token != NULL)
+    {
+        fprintf(file, "%s\n", token);
+        token = strtok(NULL, " \t\n");
+    }
+    fclose(file);
+}

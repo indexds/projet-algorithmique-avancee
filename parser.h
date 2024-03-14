@@ -32,5 +32,9 @@ FILE *openFile(char *filename);
 Rule *ruleParser(FILE *file);
 Fact *factParser(FILE *file);
 
+void freeRules(Rule *rules);
+void freeFacts(Fact *facts);
+
+void editFactsFile(char *filename, char *content);
 
 #endif

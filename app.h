@@ -8,9 +8,6 @@
 #include <stdbool.h>
 #include "inferrer.h"
 
-int app(void);
-
-
-
+void app(void);
 
 #endif

@@ -9,7 +9,7 @@ GTK4_LIBS = $(shell $(PKG_CONFIG) --libs gtk4)
 TARGET = main
 
 # Source files
-SRCS = parser.c inferrer.c app.c main.c
+SRCS = parser.c inferrer.c app.c
 
 # Object files
 OBJS = $(SRCS:.c=.o)
@@ -29,8 +29,7 @@ $(TARGET): $(OBJS)
 # Dependencies
 parser.o: parser.h
 inferrer.o: inferrer.h
-app.o: app.h
-main.o: parser.h inferrer.h app.h
+app.o: app.h inferrer.h parser.h
 
 # Clean rule to remove generated object files
 clean:
