@@ -93,9 +93,9 @@ bool BackwardChaining(Fact *first_fact, Rule *first_rule, char *goal)
                     return true;
                 }
 
-                if (!BackwardChaining(first_fact, first_rule, current_rule->condition->data))
+                if (BackwardChaining(first_fact, first_rule, current_rule->condition->data))
                 { // Condition may have other conditions, we check those. If they are false, we return false.
-                    return false;
+                    return true;
                 }
 
                 current_rule->condition = current_rule->condition->next;
