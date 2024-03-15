@@ -81,7 +81,24 @@ Fact *ForwardChaining(Fact *first_fact, Rule *first_rule)
 
 bool BackwardChaining(Fact *first_fact, Rule *first_rule, char *goal)
 {
-    return true;
+    Rule *current_rule = first_rule;
+    while(current_rule != NULL){
+        if(strcmp(current_rule->data, goal) == 0){
+            if(current_rule->condition == NULL)
+            {
+                return true;
+            }
+            else
+            {
+                Condition* current_condition = current_rule->condition;
+                Fact* current_fact = first_fact;
 
+                // Loop through facts to check if every condition is satisfied
 
+            }
+        }
+
+        current_rule = current_rule->next;
+    }
+    return false;
 }
