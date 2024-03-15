@@ -1,17 +1,17 @@
 Squelette_interne Crane -> Vertebre
 Vertebre Os -> Osteichtyen
 Vertebre Cartilage -> Chondrichthyen
-Osteichtyen 4_Membres -> Tretrapode
+Osteichtyen 4_Membres -> Tetrapode
 Osteichtyen Nageoires -> Actinopterygien
-Tretrapode Gesier Plumes -> Oiseau
+Tetrapode Gesier Plumes -> Oiseau
 Oiseau -> END
-Tretrapode Gesier Trou_triangle -> Crocodile
+Tetrapode Gesier Trou_triangle -> Crocodile
 Crocodile -> END
-Tretrapode Poils_Mamelles -> Mammifere
+Tetrapode Poils_Mamelles -> Mammifere
 Mammifere -> END
-Tretrapode Carapace -> Chenolien
+Tetrapode Carapace -> Chenolien
 Chenolien -> END
-Tretrapode Machoire_large -> Squamate
+Tetrapode Machoire_large -> Squamate
 Squamate -> END
-Tretrapode 4_doigts -> Lissamphibien
+Tetrapode 4_doigts -> Lissamphibien
 Lissamphibien -> END

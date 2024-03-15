@@ -92,13 +92,15 @@ Rule *ruleParser(FILE *file)
     return first_rule; // Head of the list
 }
 
-Fact *factParser(FILE *file){
+Fact *factParser(FILE *file)
+{
     char *data = calloc(WORD_SIZE, sizeof(char));
 
-    Fact* previous_fact = NULL;
-    Fact* first_fact = NULL;
+    Fact *previous_fact = NULL;
+    Fact *first_fact = NULL;
 
-    while(1){
+    while (1)
+    {
 
         if (fscanf(file, "%s", data) == EOF)
         {
@@ -109,17 +111,19 @@ Fact *factParser(FILE *file){
         strncpy(current_fact->data, data, strlen(data));
         current_fact->next = NULL;
 
-        if(previous_fact != NULL){
-            previous_fact->next = current_fact; //Lien entre les faits
+        if (previous_fact != NULL)
+        {
+            previous_fact->next = current_fact; // Lien entre les faits
         }
 
-        if (first_fact == NULL){
+        if (first_fact == NULL)
+        {
             first_fact = current_fact;
         }
 
         previous_fact = current_fact;
     }
-    return first_fact; //Tete de liste
+    return first_fact; // Tete de liste
 }
 
 void freeRules(Rule *rules)
@@ -151,14 +155,15 @@ void freeFacts(Fact *facts)
     }
 }
 
-void editFactsFile(char* filename, char* content){
+void editFactsFile(char *filename, char *content)
+{
     FILE *file = fopen(filename, "w");
     if (file == NULL)
     {
         fprintf(stderr, "Impossible d'ouvrir le fichier '%s'\n", filename);
         exit(EXIT_FAILURE);
     }
-    //Tokenize each word of the content and write it to the file with a newline at the end of each
+    // Tokenize each word of the content and write it to the file with a newline at the end of each
     char *token = strtok(content, " \t\n");
     while (token != NULL)
     {
@@ -186,6 +191,11 @@ char *extractFactsToFile(char *filename, char *content)
         token = strtok(NULL, " \t\n");
     }
     token = strtok(NULL, " \t\n");
+
+    if (token == NULL)
+    {
+        token = strdup("Not found."); //prevent crashes
+    }
 
     fclose(file);
     free(content_copy);
