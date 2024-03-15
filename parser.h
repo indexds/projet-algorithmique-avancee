@@ -37,4 +37,6 @@ void freeFacts(Fact *facts);
 
 void editFactsFile(char *filename, char *content);
 
+char *extractFactsToFile(char *filename, char *content);
+
 #endif

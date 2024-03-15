@@ -1,9 +1,9 @@
 #include "inferrer.h"
 
-static void AddFact(Rule *new_fact, Fact **first_fact)
+void AddFact(Rule *new_fact, Fact **first_fact)
 {
-    Fact *fact_node = calloc(1, sizeof(Fact));
-    strncpy(fact_node->data, new_fact->data, strlen(new_fact->data) - 1);
+    Fact *fact_node = (Fact *)malloc(sizeof(Fact));
+    strcpy(fact_node->data, new_fact->data);
     fact_node->next = *first_fact;
     *first_fact = fact_node;
 }
@@ -73,8 +73,15 @@ Fact *ForwardChaining(Fact *first_fact, Rule *first_rule)
         }
         current_rule = current_rule->next;
     }
-    
+
     Fact* not_found  = calloc(1, sizeof(Fact));
     strncpy(not_found->data, "Not Found.", 11);
     return not_found;
+}
+
+bool BackwardChaining(Fact *first_fact, Rule *first_rule, char *goal)
+{
+    return true;
+
+
 }

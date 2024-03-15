@@ -167,3 +167,27 @@ void editFactsFile(char* filename, char* content){
     }
     fclose(file);
 }
+
+char *extractFactsToFile(char *filename, char *content)
+{
+    FILE *file = fopen(filename, "w");
+    if (file == NULL)
+    {
+        fprintf(stderr, "Impossible d'ouvrir le fichier '%s'\n", filename);
+        exit(EXIT_FAILURE);
+    }
+    // Tokenize each word of the content and write it to the file with a newline at the end of each
+    char *content_copy = strdup(content);
+    char *token = strtok(content_copy, " \t\n");
+
+    while (token != NULL && strcmp(token, "->") != 0)
+    {
+        fprintf(file, "%s\n", token);
+        token = strtok(NULL, " \t\n");
+    }
+    token = strtok(NULL, " \t\n");
+
+    fclose(file);
+    free(content_copy);
+    return token;
+}

@@ -4,5 +4,6 @@
 #include "parser.h"
 
 Fact *ForwardChaining(Fact *first_fact, Rule *first_rule);
+bool BackwardChaining(Fact *first_fact, Rule *first_rule, char *goal);
 
 #endif

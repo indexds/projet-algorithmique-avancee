@@ -37,12 +37,32 @@ static void button_clicked(GtkButton *button, gpointer user_data)
         freeFacts(facts);
         freeRules(rules);
     }
-    else if (strcmp(gtk_button_get_label(button), "Find Characs.") == 0)
+    else if (strcmp(gtk_button_get_label(button), "Prove Animal") == 0)
     {
         if (textbox2_content)
             g_free(textbox2_content);
         textbox2_content = g_strdup(text);
-        printf("%s\n", textbox2_content);
+
+        char *goal = extractFactsToFile("facts.kbs", textbox2_content);
+
+        FILE *factsFile = openFile("facts.kbs");
+        FILE *rulesFile = openFile("rules.kbs");
+
+        Rule *rules = ruleParser(rulesFile);
+        Fact *facts = factParser(factsFile);
+
+        if(BackwardChaining(facts, rules, goal)){
+            gtk_entry_buffer_set_text(buffer, "Vrai", -1);
+        }
+        else{
+            gtk_entry_buffer_set_text(buffer, "Faux", -1);
+        }
+
+        fclose(factsFile);
+        fclose(rulesFile);
+
+        freeFacts(facts);
+        freeRules(rules);
     }
 }
 
@@ -70,7 +90,7 @@ static void activate(GtkApplication *app, gpointer user_data)
     gtk_grid_attach(GTK_GRID(grid), button_find_animal, 0, 1, 1, 1);
     g_signal_connect(button_find_animal, "clicked", G_CALLBACK(button_clicked), textbox1);
 
-    button_find_chars = gtk_button_new_with_label("Find Characs.");
+    button_find_chars = gtk_button_new_with_label("Prove Animal");
     gtk_grid_attach(GTK_GRID(grid), button_find_chars, 2, 1, 1, 1);
     g_signal_connect(button_find_chars, "clicked", G_CALLBACK(button_clicked), textbox2);
 
