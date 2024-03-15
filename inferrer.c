@@ -81,20 +81,15 @@ Fact *ForwardChaining(Fact *first_fact, Rule *first_rule)
 
 bool BackwardChaining(Fact *first_fact, Rule *first_rule, char *goal)
 {
-    // We iterate through the rules. If we find a rule with the same data as the goal, we check if its conditions are satisfied.
-    // To do this we iterate through those conditions. If they are true, we do nothing.
-    // If they are false, we call BackwardChaining again with the condition as the goal.
-    // If a condition has no conditions, we check if it is in the fact base.
-
     Rule *current_rule = first_rule;
 
     while(current_rule != NULL){
         if(strcmp(current_rule->data, goal) == 0){
-
+            // We iterate through the rules. If we find a rule with the same data as the goal, we check if its conditions are satisfied.
             while(current_rule->condition != NULL){
 
                 if (isFact(first_fact, current_rule->condition->data))
-                {
+                { // If a condition has no conditions, we check if it is in the fact base.
                     return true;
                 }
 
