@@ -3,6 +3,6 @@
 
 #include "parser.h"
 
-char* ForwardChaining(Fact *first_fact, Rule *first_rule);
+Fact *ForwardChaining(Fact *first_fact, Rule *first_rule);
 
 #endif

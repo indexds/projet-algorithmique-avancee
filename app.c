@@ -26,7 +26,8 @@ static void button_clicked(GtkButton *button, gpointer user_data)
         Rule *rules = ruleParser(rulesFile);
         Fact *facts = factParser(factsFile);
 
-        char *value = ForwardChaining(facts, rules);
+        Fact *return_value = ForwardChaining(facts, rules);
+        char *value = return_value->data;
 
         gtk_entry_buffer_set_text(buffer, value, -1);
 
